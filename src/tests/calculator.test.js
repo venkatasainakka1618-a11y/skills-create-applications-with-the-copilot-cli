@@ -1,5 +1,6 @@
 const { add, subtract, multiply, divide, modulo, power, squareRoot } = require('../calculator');
 
+// Test suite for calculator operations including modulo, power, and squareroot
 describe('Calculator Functions', () => {
   describe('Addition', () => {
     test('should add two positive numbers: 2 + 3 = 5', () => {
