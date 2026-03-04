@@ -5,6 +5,9 @@
  * - Subtraction: subtract [numbers...]
  * - Multiplication: multiply [numbers...]
  * - Division: divide [numbers...]
+ * - Modulo: modulo <dividend> <divisor>
+ * - Power: power <base> <exponent>
+ * - Square Root: squareroot <number>
  */
 
 const add = (...numbers) => numbers.reduce((acc, num) => acc + num, 0);
@@ -24,7 +27,23 @@ const divide = (...numbers) => {
   return result;
 };
 
-module.exports = { add, subtract, multiply, divide };
+const modulo = (a, b) => {
+  if (b === 0) {
+    throw new Error('Cannot perform modulo with divisor of zero');
+  }
+  return a % b;
+};
+
+const power = (base, exponent) => Math.pow(base, exponent);
+
+const squareRoot = (n) => {
+  if (n < 0) {
+    throw new Error('Cannot calculate square root of a negative number');
+  }
+  return Math.sqrt(n);
+};
+
+module.exports = { add, subtract, multiply, divide, modulo, power, squareRoot };
 
 // CLI execution
 if (require.main === module) {
@@ -32,7 +51,7 @@ if (require.main === module) {
 
   if (args.length < 2) {
     console.error('Usage: calculator <operation> <number1> <number2> [number3...]');
-    console.error('Operations: add, subtract, multiply, divide');
+    console.error('Operations: add, subtract, multiply, divide, modulo, power, squareroot');
     process.exit(1);
   }
 
@@ -59,9 +78,30 @@ if (require.main === module) {
     } else if (operation === 'divide') {
       result = divide(...numbers);
       console.log(`${numbers.join(' ÷ ')} = ${result}`);
+    } else if (operation === 'modulo') {
+      if (numbers.length !== 2) {
+        console.error('Error: Modulo requires exactly 2 numbers');
+        process.exit(1);
+      }
+      result = modulo(numbers[0], numbers[1]);
+      console.log(`${numbers[0]} % ${numbers[1]} = ${result}`);
+    } else if (operation === 'power') {
+      if (numbers.length !== 2) {
+        console.error('Error: Power requires exactly 2 numbers (base and exponent)');
+        process.exit(1);
+      }
+      result = power(numbers[0], numbers[1]);
+      console.log(`${numbers[0]} ^ ${numbers[1]} = ${result}`);
+    } else if (operation === 'squareroot') {
+      if (numbers.length !== 1) {
+        console.error('Error: Square root requires exactly 1 number');
+        process.exit(1);
+      }
+      result = squareRoot(numbers[0]);
+      console.log(`√${numbers[0]} = ${result}`);
     } else {
       console.error(`Error: Unknown operation '${operation}'`);
-      console.error('Operations: add, subtract, multiply, divide');
+      console.error('Operations: add, subtract, multiply, divide, modulo, power, squareroot');
       process.exit(1);
     }
   } catch (error) {
